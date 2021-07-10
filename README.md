@@ -2,10 +2,10 @@
 
 ## install dependencies
 ```
-        npm install
+npm install
 ```
 
 ## start proyect
 ```
-        npm start
+npm start
 ```
