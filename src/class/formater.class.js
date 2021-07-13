@@ -68,7 +68,8 @@ class BuilderDataStructure {
 	buildDataStructure(data) {
 		data = this.#separateByLevels(data);
 		data = this.#separeteSubjects(data);
-		return this.#separateGroups(data);
+		return data;
+		// return this.#separateGroups(data);
 	}
 
 	#separateGroups(data) {
