@@ -34,6 +34,12 @@ class FormaterEcoPDF {
 				data[i] += data.splice(i + 1, 1)[0];
 			}
 		}
+		for (let i = 0; i < data.length; i++) {
+			if (/^POR DESIGNAR/.test(data[i])) {
+				const [, , day] = data[i].split(" ");
+				data.splice(i, 1, data[i].slice(0, 12), day);
+			}
+		}
 
 		return data;
 	}
@@ -68,16 +74,46 @@ class BuilderDataStructure {
 	buildDataStructure(data) {
 		data = this.#separateByLevels(data);
 		data = this.#separeteSubjects(data);
-		return data;
-		// return this.#separateGroups(data);
+		return this.#separateGroups(data);
 	}
 
 	#separateGroups(data) {
+		let groupsKeys = {};
+		let groups = [];
+
 		data.levels.forEach((level) => {
 			level.subjects.forEach((subject) => {
-				subject.groups((value) => {});
+				for (let i = 0; i < subject.groups.length; i += 5) {
+					if (groupsKeys[subject.groups[i]] !== undefined) {
+						groups[groups.length - 1].schedule.push(
+							this.#transformSchedules(subject.groups.slice(i + 1, i + 5))
+						);
+					} else {
+						groupsKeys[subject.groups[i]] = i;
+						groups.push({
+							code: subject.groups[i],
+							schedule: [this.#transformSchedules(subject.groups.slice(i + 1, i + 5))],
+						});
+					}
+				}
+				subject.groups = groups;
+				groupsKeys = {};
+				groups = [];
 			});
 		});
+		return data;
+	}
+
+	#transformSchedules([teacher, day, hours, room]) {
+		return {
+			day,
+			start: hours.slice(0, 5),
+			end: hours.slice(8),
+			duration: 2,
+			room,
+			teacher: /\[AUX\]/.test(teacher) ? teacher.slice(5) : teacher,
+			isClass: !/\[AUX\]/.test(teacher),
+		};
 	}
 
 	#separeteSubjects(data) {
@@ -108,7 +144,7 @@ class BuilderDataStructure {
 		const subjects = {};
 
 		level.subjects.forEach((value, index) => {
-			if (/^130/.test(value)) {
+			if (/^130/.test(value) || /^180/.test(value)) {
 				subjects[value] = index;
 			}
 		});
