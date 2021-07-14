@@ -3,12 +3,13 @@ const PaserPDF = require("./class/parser.class");
 const { readdir } = require("fs");
 
 const formatter = new FormatterEcoPDF();
-const parser = new PaserPDF(formatter);
+// const parser = new PaserPDF(formatter);
 
 readdir("./pdf", (_, files) => {
 	files.forEach((file) => {
 		const newFile = file.replace(".pdf", "").replace(/\s/g, "");
 		// fs.unlinkSync(`./json/${newFile}.json`)
+		const parser = new PaserPDF(formatter);
 		parser.parseDocument({ nameInput: file, nameOutput: newFile });
 	});
 });
