@@ -39,6 +39,9 @@ class FormaterEcoPDF {
 				const [, , day] = data[i].split(" ");
 				data.splice(i, 1, data[i].slice(0, 12), day);
 			}
+			if (/^J130/.test(data[i])) {
+				data.splice(i, 1, data[i].slice(0, 1), data[i].slice(1));
+			}
 		}
 
 		return data;
