@@ -110,8 +110,8 @@ class BuilderDataStructure {
 	#transformSchedules([teacher, day, hours, room]) {
 		return {
 			day,
-			start: hours.slice(0, 5),
-			end: hours.slice(8),
+			start: hours.slice(0, 5).replace(":", ""),
+			end: hours.slice(8).replace(":", ""),
 			duration: 2,
 			room,
 			teacher: /\[AUX\]/.test(teacher) ? teacher.slice(5) : teacher,
