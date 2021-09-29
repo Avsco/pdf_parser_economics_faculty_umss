@@ -12,8 +12,15 @@ class PaserPdf {
 
 	async parseDocument({ nameOutput, nameInput }) {
 		const data = await this.#parsePDF(nameInput);
-		this.#writeNewPage(data, nameOutput);
+		this.#writeNewPage(data, this.formatNameJson(nameOutput));
 	}
+
+	formatNameJson = (name) => {
+		return name
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "");
+	};
 
 	#parsePDF(nameInput) {
 		return new Promise((resolve, reject) => {
