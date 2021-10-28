@@ -112,7 +112,7 @@ class BuilderDataStructure {
 			day,
 			start: hours.slice(0, 5).replace(":", ""),
 			end: hours.slice(8).replace(":", ""),
-			duration: 2,
+			duration: 1,
 			room,
 			teacher: /\[AUX\]/.test(teacher) ? teacher.slice(5) : teacher,
 			isClass: !/\[AUX\]/.test(teacher),
