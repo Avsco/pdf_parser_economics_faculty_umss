@@ -96,6 +96,7 @@ class BuilderDataStructure {
 						groups.push({
 							code: subject.groups[i],
 							schedule: [this.#transformSchedules(subject.groups.slice(i + 1, i + 5))],
+							teacher: /AUXILIAR/.test(subject.groups[i + 1]) ? subject.groups[i + 6] : subject.groups[i + 1],
 						});
 					}
 				}
